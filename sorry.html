@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Special Message 💖</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+body {
+  margin:0; padding:0;
+  height:100vh;
+  overflow:hidden;
+  font-family:'Quicksand', sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(135deg,#ffd6e0,#c9f0ff,#ffe6f7,#d9f7ff);
+  background-size:400% 400%;
+  animation: gradient 15s ease infinite;
+  transition: background 2s ease;
+}
+@keyframes gradient{
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+.container{text-align:center;}
+.speech{
+  font-size:2rem;
+  background: rgba(255,255,255,0.8);
+  padding:15px 25px;
+  border-radius:25px;
+  display:inline-block;
+  margin-bottom:20px;
+  transition:all 0.5s ease;
+}
+.emoji{
+  font-size:4rem;
+  display:block;
+  margin-bottom:15px;
+  transition:transform 0.5s ease;
+}
+button{
+  padding:12px 25px;
+  font-size:1.2rem;
+  border:none;
+  border-radius:30px;
+  background:#ff99cc;
+  color:white;
+  cursor:pointer;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, background 0.3s ease;
+  margin: 5px;
+}
+button:hover{
+  transform:scale(1.1);
+  background:#ff66aa;
+}
+.toys{
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap:20px;
+  margin-bottom:20px;
+}
+.toy{
+  width:120px;
+  transition:transform 0.4s ease;
+}
+.toy:hover{
+  transform:scale(1.1) rotate(5deg);
+}
+.balloon{
+  position:absolute;
+  width:50px;
+  pointer-events:none;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+  0% {transform:translateY(100vh) rotate(0deg);opacity:1;}
+  100%{transform:translateY(-150vh) rotate(20deg);opacity:0;}
+}
+canvas{position:fixed;top:0;left:0;pointer-events:none;}
+.hidden{display:none;}
+
+/* Cute Cat Styles */
+.cat-container {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.cute-cat {
+  width: 180px;
+  height: 180px;
+  position: relative;
+  margin: 0 auto 25px;
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+}
+
+/* Cat Body Parts */
+.cat-face {
+  width: 120px;
+  height: 100px;
+  background: #FFB6C1;
+  border-radius: 50% 50% 40% 40%;
+  position: absolute;
+  top: 40px;
+  left: 30px;
+  z-index: 3;
+}
+
+.cat-ear {
+  width: 40px;
+  height: 50px;
+  background: #FFB6C1;
+  border-radius: 50% 50% 0 0;
+  position: absolute;
+  top: 20px;
+  z-index: 2;
+}
+
+.cat-ear::before {
+  content: '';
+  width: 25px;
+  height: 30px;
+  background: #FF85A2;
+  border-radius: 50% 50% 0 0;
+  position: absolute;
+  top: 5px;
+  left: 7px;
+}
+
+.cat-ear.left { 
+  left: 25px;
+  transform: rotate(-5deg);
+}
+.cat-ear.right { 
+  right: 25px;
+  transform: rotate(5deg);
+}
+
+.cat-body {
+  width: 100px;
+  height: 80px;
+  background: #FFB6C1;
+  border-radius: 40px 40px 20px 20px;
+  position: absolute;
+  top: 120px;
+  left: 40px;
+  z-index: 1;
+}
+
+.cat-paw {
+  width: 30px;
+  height: 25px;
+  background: #FFB6C1;
+  border-radius: 50%;
+  position: absolute;
+  top: 190px;
+  z-index: 1;
+}
+
+.cat-paw.left { 
+  left: 45px;
+  animation: pawWave 2s ease-in-out infinite;
+}
+.cat-paw.right { 
+  right: 45px;
+  animation: pawWave 2s ease-in-out infinite 0.5s;
+}
+
+.cat-tail {
+  width: 60px;
+  height: 15px;
+  background: #FFB6C1;
+  border-radius: 10px;
+  position: absolute;
+  top: 150px;
+  right: 10px;
+  transform-origin: left center;
+  animation: tailWag 3s ease-in-out infinite;
+}
+
+/* Cute Face Features */
+.cat-eye {
+  width: 20px;
+  height: 25px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 65px;
+  z-index: 4;
+  border: 2px solid #333;
+  overflow: hidden;
+}
+
+.cat-eye::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: #333;
+  border-radius: 50%;
+  position: absolute;
+  top: 5px;
+  left: 3px;
+  animation: blink 4s infinite;
+}
+
+.cat-eye.left { left: 40px; }
+.cat-eye.right { right: 40px; }
+
+.cat-nose {
+  width: 15px;
+  height: 8px;
+  background: #FF6B8B;
+  border-radius: 50%;
+  position: absolute;
+  top: 85px;
+  left: 52px;
+  z-index: 4;
+}
+
+.cat-mouth {
+  width: 20px;
+  height: 8px;
+  background: transparent;
+  border-bottom: 3px solid #FF6B8B;
+  border-radius: 0 0 10px 10px;
+  position: absolute;
+  top: 95px;
+  left: 50px;
+  z-index: 4;
+  animation: purr 2s ease-in-out infinite;
+}
+
+.cat-whisker {
+  width: 25px;
+  height: 2px;
+  background: #333;
+  position: absolute;
+  top: 80px;
+}
+
+.cat-whisker.left-1 { left: 20px; transform: rotate(-10deg); }
+.cat-whisker.left-2 { left: 20px; top: 85px; transform: rotate(10deg); }
+.cat-whisker.right-1 { right: 20px; transform: rotate(10deg); }
+.cat-whisker.right-2 { right: 20px; top: 85px; transform: rotate(-10deg); }
+
+/* Animations */
+@keyframes pawWave {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(10deg); }
+}
+
+@keyframes tailWag {
+  0%, 100% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
+}
+
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+@keyframes purr {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(1.2); }
+}
+
+@keyframes floatCat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-3px) rotate(1deg); }
+  75% { transform: translateY(-2px) rotate(-1deg); }
+}
+
+.cute-cat {
+  animation: floatCat 4s ease-in-out infinite;
+}
+
+@keyframes bounceIn {
+  0% { transform: translate(-50%, 100px) scale(0.8); opacity: 0; }
+  60% { transform: translate(-50%, -15px) scale(1.1); opacity: 1; }
+  100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: translateX(-50%) rotate(0deg); }
+  25% { transform: translateX(-50%) rotate(2deg); }
+  75% { transform: translateX(-50%) rotate(-2deg); }
+}
+
+.cat-speech {
+  font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 18px 25px;
+  border-radius: 25px;
+  margin-bottom: 20px;
+  animation: popIn 0.8s ease forwards, wiggle 3s ease-in-out infinite;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  position: relative;
+  border: 3px solid #FFB6C1;
+}
+
+.cat-speech:after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 12px solid #FFB6C1;
+}
+
+/* Button Container */
+.button-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23ff4d6d" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+  background-size: contain;
+  pointer-events: none;
+  opacity: 0;
+  animation: floatHeart linear forwards;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) rotate(15deg) scale(1.1);
+    opacity: 0;
+  }
+}
+
+@keyframes popIn {
+  0% { transform: translateX(-50%) scale(0) rotate(-5deg); opacity: 0; }
+  100% { transform: translateX(-50%) scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Sad cat animation */
+@keyframes sadBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.sad-cat .cat-mouth {
+  border-bottom: none;
+  border-top: 3px solid #FF6B8B;
+  border-radius: 10px 10px 0 0;
+  animation: sadBounce 1s ease-in-out infinite;
+}
+</style>
+</head>
+<body>
+
+<!-- Initial Cat Screen -->
+<div id="initialCat" class="cat-container">
+  <div class="cute-cat">
+    <div class="cat-ear left"></div>
+    <div class="cat-ear right"></div>
+    <div class="cat-face"></div>
+    <div class="cat-body"></div>
+    <div class="cat-tail"></div>
+    <div class="cat-paw left"></div>
+    <div class="cat-paw right"></div>
+    <div class="cat-eye left"></div>
+    <div class="cat-eye right"></div>
+    <div class="cat-nose"></div>
+    <div class="cat-mouth"></div>
+    <div class="cat-whisker left-1"></div>
+    <div class="cat-whisker left-2"></div>
+    <div class="cat-whisker right-1"></div>
+    <div class="cat-whisker right-2"></div>
+  </div>
+  <div class="cat-speech">
+    Meow! 🐾<br>
+    Akhil wants to say something to its Karu!<br>
+    <div class="button-container">
+      <button onclick="showApology()">What he wants to say? 🥰</button>
+      <button onclick="showPlea()">Don't want to listen 🙉</button>
+    </div>
+  </div>
+</div>
+
+<!-- Apology Screen -->
+<div class="container hidden" id="apologyContainer">
+  <h1>I'm Sorry</h1>
+  <div class="speech">
+    <span class="emoji">🥰</span>
+    My besteesttttt 💖
+  </div>
+ 
+  <button onclick="showThankYou()">Forgive Me 💖</button>
+</div>
+
+<!-- Plea Screen -->
+<div id="pleaContainer" class="cat-container hidden">
+  <div class="cute-cat sad-cat">
+    <div class="cat-ear left"></div>
+    <div class="cat-ear right"></div>
+    <div class="cat-face"></div>
+    <div class="cat-body"></div>
+    <div class="cat-tail"></div>
+    <div class="cat-paw left"></div>
+    <div class="cat-paw right"></div>
+    <div class="cat-eye left"></div>
+    <div class="cat-eye right"></div>
+    <div class="cat-nose"></div>
+    <div class="cat-mouth"></div>
+    <div class="cat-whisker left-1"></div>
+    <div class="cat-whisker left-2"></div>
+    <div class="cat-whisker right-1"></div>
+    <div class="cat-whisker right-2"></div>
+  </div>
+  <div class="cat-speech">
+    Kel sumnee 🥰<br>
+    <br>
+    <button onclick="showApology()">Okay, I'll listen 💖</button>
+  </div>
+</div>
+
+<!-- Thank You Screen -->
+<div id="thankYouContainer" class="cat-container hidden">
+  <div class="cute-cat">
+    <div class="cat-ear left"></div>
+    <div class="cat-ear right"></div>
+    <div class="cat-face"></div>
+    <div class="cat-body"></div>
+    <div class="cat-tail"></div>
+    <div class="cat-paw left"></div>
+    <div class="cat-paw right"></div>
+    <div class="cat-eye left"></div>
+    <div class="cat-eye right"></div>
+    <div class="cat-nose"></div>
+    <div class="cat-mouth"></div>
+    <div class="cat-whisker left-1"></div>
+    <div class="cat-whisker left-2"></div>
+    <div class="cat-whisker right-1"></div>
+    <div class="cat-whisker right-2"></div>
+  </div>
+  <div class="cat-speech">
+    Thank you! You're the best! 💖<br>
+    Do you want to see some magical skyshots?<br>
+    <div class="button-container">
+      <button onclick="startFireworks()">Yes, show me! ✨</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="fireworksCanvas" class="hidden"></canvas>
+
+<script>
+// Balloons
+const colors = ["#ff4d6d","#66b3ff","#ffcc00","#77dd77"];
+let balloonInterval;
+
+function createBalloon(){
+  const svgNS="http://www.w3.org/2000/svg";
+  const balloon=document.createElementNS(svgNS,"svg");
+  balloon.setAttribute("class","balloon");
+  balloon.setAttribute("viewBox","0 0 50 100");
+  balloon.style.left=Math.random()*window.innerWidth+"px";
+  balloon.style.width=(40+Math.random()*30)+"px";
+  balloon.style.animationDuration=(10+Math.random()*5)+"s";
+  const ellipse=document.createElementNS(svgNS,"ellipse");
+  ellipse.setAttribute("cx","25"); ellipse.setAttribute("cy","35");
+  ellipse.setAttribute("rx","20"); ellipse.setAttribute("ry","30");
+  ellipse.setAttribute("fill",colors[Math.floor(Math.random()*colors.length)]);
+  balloon.appendChild(ellipse);
+  const line=document.createElementNS(svgNS,"line");
+  line.setAttribute("x1","25");line.setAttribute("y1","65");
+  line.setAttribute("x2","25");line.setAttribute("y2","100");
+  line.setAttribute("stroke","#555");line.setAttribute("stroke-width","2");
+  balloon.appendChild(line);
+  document.body.appendChild(balloon);
+  setTimeout(()=>balloon.remove(),15000);
+}
+
+// Stop Balloons
+function stopBalloons(){
+  clearInterval(balloonInterval);
+  document.querySelectorAll(".balloon").forEach(b=>b.remove());
+}
+
+// Create floating hearts
+function createHearts() {
+  for (let i = 0; i < 15; i++) {
+    setTimeout(() => {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = (Math.random() * 250 - 125 + window.innerWidth/2) + 'px';
+      heart.style.bottom = '50px';
+      heart.style.animationDuration = (2 + Math.random() * 2) + 's';
+      heart.style.animationDelay = (Math.random() * 0.5) + 's';
+      document.body.appendChild(heart);
+      
+      setTimeout(() => {
+        if (heart.parentNode) {
+          heart.remove();
+        }
+      }, 3000);
+    }, i * 120);
+  }
+}
+
+// Screen navigation functions
+function showApology() {
+  document.getElementById('initialCat').classList.add('hidden');
+  document.getElementById('pleaContainer').classList.add('hidden');
+  document.getElementById('apologyContainer').classList.remove('hidden');
+  createHearts();
+}
+
+function showPlea() {
+  document.getElementById('initialCat').classList.add('hidden');
+  document.getElementById('pleaContainer').classList.remove('hidden');
+  createHearts();
+}
+
+function showThankYou() {
+  document.getElementById('apologyContainer').classList.add('hidden');
+  document.getElementById('thankYouContainer').classList.remove('hidden');
+  stopBalloons();
+  createHearts();
+}
+
+function startFireworks() {
+  document.getElementById('thankYouContainer').classList.add('hidden');
+  
+  const fireworksCanvas = document.getElementById("fireworksCanvas");
+  const ctx = fireworksCanvas.getContext("2d");
+  
+  document.body.style.background="#000";
+  fireworksCanvas.classList.remove("hidden");
+  fireworksCanvas.width=window.innerWidth;
+  fireworksCanvas.height=window.innerHeight;
+  
+  // Fireworks functions
+  let rockets=[],particles=[];
+  
+  function random(min,max){return Math.random()*(max-min)+min;}
+  
+  function createRocket(){
+    rockets.push({
+      x:random(50, fireworksCanvas.width-50),
+      y:fireworksCanvas.height,
+      speed:random(5,8),
+      target:random(fireworksCanvas.height*0.3, fireworksCanvas.height*0.5),
+      color:colors[Math.floor(Math.random()*colors.length)]
+    });
+  }
+  
+  function explodeRocket(x,y){
+    for(let i=0;i<80;i++){
+      particles.push({
+        x,y,
+        angle:Math.random()*2*Math.PI,
+        speed:random(2,6),
+        radius:2,
+        life:100,
+        color:colors[Math.floor(Math.random()*colors.length)]
+      });
+    }
+  }
+  
+  function updateFireworks(){
+    ctx.fillStyle="rgba(0,0,0,0.2)";
+    ctx.fillRect(0,0,fireworksCanvas.width,fireworksCanvas.height);
+    rockets.forEach((r,i)=>{
+      r.y-=r.speed;
+      ctx.beginPath();
+      ctx.moveTo(r.x,r.y);
+      ctx.lineTo(r.x,r.y+10);
+      ctx.strokeStyle=r.color;
+      ctx.lineWidth=2;
+      ctx.stroke();
+      if(r.y<=r.target){
+        explodeRocket(r.x,r.y);
+        rockets.splice(i,1);
+      }
+    });
+    particles.forEach((p,i)=>{
+      p.x+=Math.cos(p.angle)*p.speed;
+      p.y+=Math.sin(p.angle)*p.speed;
+      p.speed*=0.95;
+      p.life--;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.radius,0,2*Math.PI);
+      ctx.fillStyle=p.color;
+      ctx.fill();
+    });
+    particles=particles.filter(p=>p.life>0);
+    requestAnimationFrame(updateFireworks);
+  }
+  
+  function startFireworksAnimation(){
+    setInterval(createRocket,800);
+    updateFireworks();
+  }
+  
+  startFireworksAnimation();
+}
+
+// Initialize - Start balloons
+window.addEventListener('load', () => {
+  for(let i=0;i<6;i++) createBalloon();
+  balloonInterval=setInterval(createBalloon,1200);
+});
+
+// Toy floating animation
+gsap.to(".toy",{y:20,duration:2,repeat:-1,yoyo:true,ease:"sine.inOut",stagger:0.3});
+</script>
+
+</body>
+</html>
